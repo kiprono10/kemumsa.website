@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const { body, validationResult } = require('express-validator');
 const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 
 // Models
@@ -9,6 +11,7 @@ const Official = require('../models/Official');
 const ContactMessage = require('../models/ContactMessage');
 const Subscriber = require('../models/Subscriber');
 const Newsletter = require('../models/Newsletter');
+const User = require('../models/User');
 
 // Admin Dashboard
 router.get('/dashboard', ensureAdmin, async (req, res) => {
@@ -16,8 +19,8 @@ router.get('/dashboard', ensureAdmin, async (req, res) => {
         // Get statistics
         const totalEvents = await Event.countDocuments();
         const totalNews = await News.countDocuments();
-        const unreadMessages = await ContactMessage.countDocuments({ read: false });
-        const activeSubscribers = await Subscriber.countDocuments({ status: 'active' });
+        const unreadMessages = 0; // Removed messages functionality
+        const activeSubscribers = 0; // Removed subscribers functionality
         const pageViews = 3458; // Placeholder - would need analytics integration
 
         // Upcoming events
@@ -27,7 +30,6 @@ router.get('/dashboard', ensureAdmin, async (req, res) => {
             .populate('createdBy', 'name');
 
         // Recent users
-        const User = require('../models/User');
         const recentUsers = await User.find()
             .sort({ date: -1 })
             .limit(5)
@@ -276,39 +278,7 @@ router.delete('/officials/:id', ensureAdmin, async (req, res) => {
     }
 });
 
-// Contact Messages Routes
-router.get('/messages', ensureAdmin, async (req, res) => {
-    try {
-        const messages = await ContactMessage.find()
-            .sort({ date: -1 })
-            .select('name email subject message read date');
-        res.render('admin/messages/index', {
-            title: 'Contact Messages',
-            messages
-        });
-    } catch (err) {
-        console.error(err);
-        req.flash('error_msg', 'Error loading messages');
-        res.redirect('/admin/dashboard');
-    }
-});
 
-// Subscribers Routes
-router.get('/subscribers', ensureAdmin, async (req, res) => {
-    try {
-        const subscribers = await Subscriber.find()
-            .sort({ subscribedAt: -1 })
-            .select('name email status subscribedAt emailsReceived');
-        res.render('admin/subscribers/index', {
-            title: 'Newsletter Subscribers',
-            subscribers
-        });
-    } catch (err) {
-        console.error(err);
-        req.flash('error_msg', 'Error loading subscribers');
-        res.redirect('/admin/dashboard');
-    }
-});
 
 // Analytics Routes
 router.get('/analytics', ensureAdmin, (req, res) => {
@@ -322,6 +292,99 @@ router.get('/settings', ensureAdmin, (req, res) => {
     res.render('admin/settings', {
         title: 'System Settings'
     });
+});
+
+// Profile Update Route
+router.post('/settings/profile', ensureAdmin, [
+    body('name').notEmpty().withMessage('Name is required'),
+    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('studentId').notEmpty().withMessage('Student ID is required'),
+    body('yearOfStudy').notEmpty().withMessage('Year of study is required'),
+    body('newPassword').optional().isLength({ min: 6 }).withMessage('New password must be at least 6 characters'),
+    body('confirmPassword').optional().custom((value, { req }) => {
+        if (value !== req.body.newPassword) {
+            throw new Error('Password confirmation does not match');
+        }
+        return true;
+    })
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.render('admin/settings', {
+            title: 'System Settings',
+            errors: errors.array(),
+            formData: req.body
+        });
+    }
+
+    const { name, email, phone, studentId, yearOfStudy, bio, currentPassword, newPassword } = req.body;
+
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            req.flash('error_msg', 'User not found');
+            return res.redirect('/admin/settings');
+        }
+
+        // If changing password or email, require current password verification
+        if ((newPassword || email !== user.email) && !currentPassword) {
+            return res.render('admin/settings', {
+                title: 'System Settings',
+                errors: [{ msg: 'Current password is required to change password or email' }],
+                formData: req.body
+            });
+        }
+
+        // Verify current password if provided
+        if (currentPassword) {
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) {
+                return res.render('admin/settings', {
+                    title: 'System Settings',
+                    errors: [{ msg: 'Current password is incorrect' }],
+                    formData: req.body
+                });
+            }
+        }
+
+        // Check email uniqueness if changed
+        if (email !== user.email) {
+            const existingUser = await User.findOne({ email: email });
+            if (existingUser) {
+                return res.render('admin/settings', {
+                    title: 'System Settings',
+                    errors: [{ msg: 'Email is already registered' }],
+                    formData: req.body
+                });
+            }
+        }
+
+        // Update user fields
+        user.name = name;
+        user.email = email;
+        user.phone = phone || null;
+        user.studentId = studentId;
+        user.yearOfStudy = yearOfStudy;
+        user.bio = bio || null;
+
+        // Update password if provided
+        if (newPassword) {
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(newPassword, salt);
+        }
+
+        await user.save();
+
+        req.flash('success_msg', 'Profile updated successfully');
+        res.redirect('/admin/settings');
+    } catch (err) {
+        console.error(err);
+        res.render('admin/settings', {
+            title: 'System Settings',
+            errors: [{ msg: 'Error updating profile. Please try again.' }],
+            formData: req.body
+        });
+    }
 });
 
 module.exports = router;

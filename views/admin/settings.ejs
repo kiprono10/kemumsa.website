@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Tho<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -185,21 +185,7 @@
                         <i class="fas fa-users"></i>Officials Management
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/users">
-                        <i class="fas fa-user-cog"></i>User Management
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/messages">
-                        <i class="fas fa-envelope"></i>Contact Messages
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/subscribers">
-                        <i class="fas fa-mail-bulk"></i>Subscribers
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/analytics">
                         <i class="fas fa-chart-bar"></i>Analytics
@@ -234,6 +220,72 @@
                 <button class="btn btn-success">
                     <i class="fas fa-save me-2"></i>Save Changes
                 </button>
+            </div>
+        </div>
+
+        <!-- Admin Profile Settings -->
+        <div class="settings-card">
+            <div class="setting-group">
+                <h5><i class="fas fa-user me-2"></i>Admin Profile</h5>
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            <% errors.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% } %>
+                <% if (typeof success_msg !== 'undefined') { %>
+                    <div class="alert alert-success">
+                        <%= success_msg %>
+                    </div>
+                <% } %>
+                <form id="profileForm" method="POST" action="/admin/settings/profile">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name" value="<%= (typeof formData !== 'undefined' ? formData.name : '') || (user ? user.name : '') %>" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" name="email" value="<%= (typeof formData !== 'undefined' ? formData.email : '') || (user ? user.email : '') %>" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" name="phone" value="<%= (typeof formData !== 'undefined' ? formData.phone : '') || (user ? user.phone : '') %>">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Student ID</label>
+                            <input type="text" class="form-control" name="studentId" value="<%= (typeof formData !== 'undefined' ? formData.studentId : '') || (user ? user.studentId : '') %>" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Year of Study</label>
+                            <input type="text" class="form-control" name="yearOfStudy" value="<%= (typeof formData !== 'undefined' ? formData.yearOfStudy : '') || (user ? user.yearOfStudy : '') %>" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-control" name="bio" rows="3"><%= (typeof formData !== 'undefined' ? formData.bio : '') || (user ? user.bio : '') %></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" class="form-control" name="currentPassword" placeholder="Enter current password to confirm changes">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-control" name="newPassword" placeholder="Leave blank to keep current password">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm new password">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Update Profile
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
