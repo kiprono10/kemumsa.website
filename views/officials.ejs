@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,3 +66,72 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <!-- Officials Section -->
+    <section class="section officials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Officials</h2>
+            </div>
+            <div class="officials-grid">
+                <% if (officials && officials.length > 0) { %>
+                    <% officials.forEach(official => { %>
+                        <div class="official-card">
+                            <div class="official-image">
+                                <% if (official.image) { %>
+                                    <img src="<%= official.image %>" alt="<%= official.name %>">
+                                <% } else { %>
+                                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="<%= official.name %>">
+                                <% } %>
+                            </div>
+                            <div class="official-info">
+                                <h3><%= official.name %></h3>
+                                <p><%= official.position %></p>
+                                <% if (official.bio) { %>
+                                    <p><%= official.bio %></p>
+                                <% } %>
+                                <% if (official.socialLinks && (official.socialLinks.twitter || official.socialLinks.linkedin || official.socialLinks.facebook || official.socialLinks.instagram)) { %>
+                                    <div class="social-links">
+                                        <% if (official.socialLinks.twitter) { %>
+                                            <a href="<%= official.socialLinks.twitter %>" target="_blank"><i class="fab fa-twitter"></i></a>
+                                        <% } %>
+                                        <% if (official.socialLinks.linkedin) { %>
+                                            <a href="<%= official.socialLinks.linkedin %>" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                        <% } %>
+                                        <% if (official.socialLinks.facebook) { %>
+                                            <a href="<%= official.socialLinks.facebook %>" target="_blank"><i class="fab fa-facebook"></i></a>
+                                        <% } %>
+                                        <% if (official.socialLinks.instagram) { %>
+                                            <a href="<%= official.socialLinks.instagram %>" target="_blank"><i class="fab fa-instagram"></i></a>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No officials found.</p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
+>>>>>>> aec2d52f7339ec075ae7ba471a021102c74306b1

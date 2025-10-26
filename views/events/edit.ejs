@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,3 +129,135 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .form-container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <section class="section">
+        <div class="container">
+            <div class="form-container">
+                <h2>Edit Event</h2>
+
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <% errors.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form action="/events/admin/<%= event._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Event Title *</label>
+                            <input type="text" id="title" name="title" class="form-control" placeholder="Enter event title" value="<%= event.title %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" class="form-control">
+                                <option value="academic" <%= event.category === 'academic' ? 'selected' : '' %>>Academic</option>
+                                <option value="conference" <%= event.category === 'conference' ? 'selected' : '' %>>Conference</option>
+                                <option value="workshop" <%= event.category === 'workshop' ? 'selected' : '' %>>Workshop</option>
+                                <option value="outreach" <%= event.category === 'outreach' ? 'selected' : '' %>>Community Outreach</option>
+                                <option value="social" <%= event.category === 'social' ? 'selected' : '' %>>Social</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Event Date & Time *</label>
+                            <input type="datetime-local" id="date" name="date" class="form-control" value="<%= new Date(event.date).toISOString().slice(0, 16) %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" name="location" class="form-control" placeholder="Enter event location" value="<%= event.location %>" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                        <small style="color: var(--text-light);">Upload a new image file (max 5MB) or leave empty to keep current image</small>
+                        <% if (event.image) { %>
+                            <div style="margin-top: 10px;">
+                                <small style="color: var(--text-light);">Current image: <a href="<%= event.image %>" target="_blank">View current image</a></small>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video">Video</label>
+                        <input type="file" id="video" name="video" class="form-control" accept="video/*">
+                        <small style="color: var(--text-light);">Upload a new video file (max 50MB) or leave empty to keep current video</small>
+                        <% if (event.video) { %>
+                            <div style="margin-top: 10px;">
+                                <small style="color: var(--text-light);">Current video: <a href="<%= event.video %>" target="_blank">View current video</a></small>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacity">Capacity (0 for unlimited)</label>
+                        <input type="number" id="capacity" name="capacity" class="form-control" placeholder="Maximum number of attendees" value="<%= event.capacity %>" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Enter event description" rows="6" required><%= event.description %></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button type="submit" class="btn btn-accent">Update Event</button>
+                        <a href="/events/<%= event._id %>" class="btn">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
+>>>>>>> aec2d52f7339ec075ae7ba471a021102c74306b1

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -307,3 +308,314 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #003366;
+            --secondary: #0066cc;
+            --accent: #cc0000;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --sidebar-width: 250px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fb;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--primary) 0%, #002244 100%);
+            color: white;
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-brand {
+            padding: 20px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-brand h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .sidebar-nav {
+            padding: 15px 0;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            border-left-color: var(--accent);
+        }
+
+        .nav-link i {
+            width: 25px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .table th {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+        }
+
+        .table td {
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        .official-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .official-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar-toggle {
+                display: block !important;
+            }
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle for Mobile -->
+    <button class="btn btn-primary sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h3><i class="fas fa-stethoscope me-2"></i>KeMUMSA Admin</h3>
+            <small class="text-muted">Welcome, <%= user ? user.name : 'Admin' %></small>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">
+                        <i class="fas fa-tachometer-alt"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/news">
+                        <i class="fas fa-newspaper"></i>News Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/events">
+                        <i class="fas fa-calendar-alt"></i>Events Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/officials">
+                        <i class="fas fa-users"></i>Officials Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/users">
+                        <i class="fas fa-user-cog"></i>User Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/messages">
+                        <i class="fas fa-envelope"></i>Contact Messages
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/subscribers">
+                        <i class="fas fa-mail-bulk"></i>Subscribers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/analytics">
+                        <i class="fas fa-chart-bar"></i>Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/settings">
+                        <i class="fas fa-cog"></i>Settings
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a class="nav-link" href="/auth/logout">
+                        <i class="fas fa-sign-out-alt"></i>Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-0"><%= title %></h4>
+                <small class="text-muted">Manage officials and their information</small>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="/admin/officials/new" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add Official
+                </a>
+                <button class="btn btn-outline-secondary">
+                    <i class="fas fa-sort me-2"></i>Reorder
+                </button>
+            </div>
+        </div>
+
+        <!-- Officials Grid -->
+        <div class="row g-4">
+            <% officials.forEach(official => { %>
+            <div class="col-xl-4 col-md-6">
+                <div class="official-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="<%= official.image || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face' %>"
+                             alt="<%= official.name %>" class="official-photo me-3">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1"><%= official.name %></h5>
+                            <p class="text-primary mb-1"><%= official.position %></p>
+                            <small class="text-muted">Order: <%= official.order %></small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <p class="mb-2"><strong>Department:</strong> <%= official.department || 'N/A' %></p>
+                        <p class="mb-2"><strong>Email:</strong> <%= official.email || 'N/A' %></p>
+                        <p class="mb-2"><strong>Phone:</strong> <%= official.phone || 'N/A' %></p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            Added: <%= new Date(official.createdAt || official.date).toLocaleDateString() %>
+                        </small>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-primary btn-action" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <a href="/admin/officials/<%= official._id %>/edit" class="btn btn-sm btn-outline-secondary btn-action" title="Edit Official">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="POST" action="/admin/officials/<%= official._id %>?_method=DELETE" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this official?')">
+                                <button type="submit" class="btn btn-sm btn-outline-danger btn-action" title="Remove Official">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+
+        <!-- Empty State -->
+        <% if (!officials || officials.length === 0) { %>
+        <div class="text-center py-5">
+            <i class="fas fa-users fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">No Officials Found</h4>
+            <p class="text-muted">Start by adding your first official to the system.</p>
+            <a href="/admin/officials/new" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add First Official
+            </a>
+        </div>
+        <% } %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mobile sidebar toggle
+        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('show');
+        });
+    </script>
+</body>
+</html>
+>>>>>>> aec2d52f7339ec075ae7ba471a021102c74306b1

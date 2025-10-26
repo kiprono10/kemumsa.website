@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,3 +64,70 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <!-- Events Section -->
+    <section class="section events">
+        <div class="container">
+            <div class="section-title">
+                <h2>All Events</h2>
+                <% if (user && user.role === 'admin') { %>
+                    <a href="/events/admin/new" class="btn" style="margin-top: 20px;">Add New Event</a>
+                <% } %>
+            </div>
+            <div class="events-grid">
+                <% if (events && events.length > 0) { %>
+                    <% events.forEach(event => { %>
+                        <div class="event-card">
+                            <div class="event-image">
+                                <img src="<%= event.image %>" alt="<%= event.title %>">
+                            </div>
+                            <div class="event-content">
+                                <span class="event-date"><%= new Date(event.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                                <h3><%= event.title %></h3>
+                                <p><%= event.description.substring(0, 120) %>...</p>
+                                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                    <a href="/events/<%= event._id %>" class="btn">View Details</a>
+                                    <% if (user && user.role === 'admin') { %>
+                                        <a href="/events/admin/<%= event._id %>/edit" class="btn" style="background-color: #28a745;">Edit</a>
+                                        <form action="/events/admin/<%= event._id %>?_method=DELETE" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this event?')">
+                                            <button type="submit" class="btn" style="background-color: #dc3545;">Delete</button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="event-card">
+                        <div class="event-content">
+                            <h3>No Events Found</h3>
+                            <p>There are currently no events scheduled. Check back later!</p>
+                            <% if (user && user.role === 'admin') { %>
+                                <a href="/events/admin/new" class="btn">Create First Event</a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
+>>>>>>> aec2d52f7339ec075ae7ba471a021102c74306b1

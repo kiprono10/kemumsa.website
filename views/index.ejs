@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,3 +161,167 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Montez:wght@400&family=Photograph:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>KeMUMSA</h1>
+                <h3 class="montez-regular">Bachelor of Medicine And Surgery</h3>
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <img src="/images/outsourced/Image 1.jpg" alt="Image 1">
+                        <img src="/images/outsourced/image 2.jpg" alt="Image 2">
+                        <img src="/images/outsourced/Image 3.jpg" alt="Image 3">
+                        <img src="/images/outsourced/image 4.jpg" alt="Image 4">
+                        <img src="/images/outsourced/Image 5.jpg" alt="Image 5">
+                        <img src="/images/outsourced/image 6.jpg" alt="Image 6">
+                    </div>
+                </div>
+                <div class="hero-btns">
+                    <a href="#about" class="btn">Learn More</a>
+                    <a href="#contact" class="btn btn-accent">Get Involved</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About KeMUMSA</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission & Vision</h3>
+                        <div class="about-image">
+                            <img src="/images/outsourced/image 6.jpg" alt="Medical Students">
+                        </div>
+                    <p>The Kenya Methodist University Medical Students Association (KeMUMSA) is a student-led organization dedicated to fostering academic excellence, professional development, and community engagement among medical students at Kenya Methodist University.</p>
+                    <p>We aim to create a supportive environment that nurtures future healthcare leaders through various academic, social, and community outreach programs.</p>
+                    <p>Our association works closely with the university administration, faculty, and healthcare institutions to ensure our members receive comprehensive medical education and practical experience.</p>
+                    <a href="/about" class="btn">Read More</a>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="section events" id="events">
+        <div class="container">
+            <div class="section-title">
+                <h2>Upcoming Events</h2>
+            </div>
+            <div class="events-grid">
+                <% if (events && events.length > 0) { %>
+                    <% events.forEach(event => { %>
+                        <div class="event-card">
+                            <div class="event-image">
+                                <img src="<%= event.image %>" alt="<%= event.title %>">
+                            </div>
+                            <div class="event-content">
+                                <span class="event-date"><%= new Date(event.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                                <h3><%= event.title %></h3>
+                                <p><%= event.description.substring(0, 100) %>...</p>
+                                <a href="/events/<%= event._id %>" class="btn">Learn More</a>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="event-card">
+                        <div class="event-content">
+                            <h3>No Upcoming Events</h3>
+                            <p>Check back later for upcoming events and activities.</p>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="/events" class="btn">View All Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <p>We'd love to hear from you. Whether you have questions about our association, events, or how to get involved, feel free to reach out to us.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Location</h4>
+                                <p>Kenya Methodist University, Meru, Kenya</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+254 115 366 750</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>kemumsa.org@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form action="/contact" method="POST">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" class="form-control" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-accent">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
+>>>>>>> aec2d52f7339ec075ae7ba471a021102c74306b1

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,3 +158,164 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .form-container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .current-image {
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <section class="section">
+        <div class="container">
+            <div class="form-container">
+                <h2>Edit Article</h2>
+
+                <form action="/news/<%= news._id %>" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="_method" value="PUT">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Article Title *</label>
+                            <input type="text" id="title" name="title" class="form-control" placeholder="Enter article title" value="<%= news.title %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" class="form-control">
+                                <option value="general" <%= news.category === 'general' ? 'selected' : '' %>>General</option>
+                                <option value="academic" <%= news.category === 'academic' ? 'selected' : '' %>>Academic</option>
+                                <option value="research" <%= news.category === 'research' ? 'selected' : '' %>>Research</option>
+                                <option value="announcement" <%= news.category === 'announcement' ? 'selected' : '' %>>Announcement</option>
+                                <option value="event" <%= news.category === 'event' ? 'selected' : '' %>>Event</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="excerpt">Excerpt</label>
+                        <textarea id="excerpt" name="excerpt" class="form-control" placeholder="Brief summary of the article" rows="3"><%= news.excerpt %></textarea>
+                        <small style="color: var(--text-light);">If left empty, will be auto-generated from content</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Featured Image</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                        <small style="color: var(--text-light);">Supported formats: JPG, PNG, GIF (Max 5MB). Leave empty to keep current image.</small>
+                        <% if (news.image) { %>
+                            <div style="margin-top: 10px;">
+                                <strong>Current Image:</strong><br>
+                                <img src="<%= news.image %>" alt="Current article image" class="current-image">
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video">Video Media (Optional)</label>
+                        <input type="file" id="video" name="video" class="form-control" accept="video/*">
+                        <small style="color: var(--text-light);">Supported formats: MP4, AVI, MOV, etc. (Max 50MB). Leave empty to keep current video.</small>
+                        <% if (news.video) { %>
+                            <div style="margin-top: 10px;">
+                                <strong>Current Video:</strong><br>
+                                <video controls class="current-image" style="max-width: 300px;">
+                                    <source src="<%= news.video %>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="authorName">Author Name (Optional)</label>
+                            <input type="text" id="authorName" name="authorName" class="form-control" placeholder="e.g. John Doe" value="<%= news.authorName || '' %>">
+                            <small style="color: var(--text-light);">Leave empty to use system author</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="authorRole">Author Role/Position (Optional)</label>
+                            <input type="text" id="authorRole" name="authorRole" class="form-control" placeholder="e.g. Dean of Students" value="<%= news.authorRole || '' %>">
+                            <small style="color: var(--text-light);">Official position or role</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Content *</label>
+                        <textarea id="content" name="content" class="form-control" placeholder="Enter article content" rows="12" required><%= news.content %></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tags">Tags (comma-separated)</label>
+                            <input type="text" id="tags" name="tags" class="form-control" placeholder="e.g. research, academic, news" value="<%= news.tags ? news.tags.join(', ') : '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduledDate">Scheduled Date</label>
+                            <input type="datetime-local" id="scheduledDate" name="scheduledDate" class="form-control" value="<%= news.scheduledDate ? new Date(news.scheduledDate).toISOString().slice(0, 16) : '' %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="featured" name="featured" value="on" <%= news.featured ? 'checked' : '' %>>
+                            <span>Mark as Featured Article</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="published" name="published" value="on" <%= news.published ? 'checked' : '' %>>
+                            <span>Published</span>
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button type="submit" class="btn btn-accent">Update Article</button>
+                        <a href="/admin/news" class="btn">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
+>>>>>>> aec2d52f7339ec075ae7ba471a021102c74306b1
