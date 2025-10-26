@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .auth-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+        .auth-form {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 500px;
+        }
+        .auth-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .auth-links a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <div class="auth-container">
+        <div class="container">
+            <div class="auth-form">
+                <h2>Join KeMUMSA</h2>
+
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <% errors.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form action="/auth/register" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" value="<%= typeof formData !== 'undefined' ? formData.name || '' : '' %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentId">Student ID *</label>
+                        <input type="text" id="studentId" name="studentId" class="form-control" placeholder="Enter your student ID" value="<%= typeof formData !== 'undefined' ? formData.studentId || '' : '' %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yearOfStudy">Year of Study *</label>
+                        <select id="yearOfStudy" name="yearOfStudy" class="form-control" required>
+                            <option value="">Select your year of study</option>
+                            <option value="Year 1" <%= typeof formData !== 'undefined' && formData.yearOfStudy === 'Year 1' ? 'selected' : '' %>>Year 1</option>
+                            <option value="Year 2" <%= typeof formData !== 'undefined' && formData.yearOfStudy === 'Year 2' ? 'selected' : '' %>>Year 2</option>
+                            <option value="Year 3" <%= typeof formData !== 'undefined' && formData.yearOfStudy === 'Year 3' ? 'selected' : '' %>>Year 3</option>
+                            <option value="Year 4" <%= typeof formData !== 'undefined' && formData.yearOfStudy === 'Year 4' ? 'selected' : '' %>>Year 4</option>
+                            <option value="Year 5" <%= typeof formData !== 'undefined' && formData.yearOfStudy === 'Year 5' ? 'selected' : '' %>>Year 5</option>
+                            <option value="Year 6" <%= typeof formData !== 'undefined' && formData.yearOfStudy === 'Year 6' ? 'selected' : '' %>>Year 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Create a password (min 6 characters)" required>
+                    </div>
+                    <button type="submit" class="btn btn-accent" style="width: 100%;">Register</button>
+                </form>
+
+                <div class="auth-links">
+                    <p>Already have an account? <a href="/auth/login">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

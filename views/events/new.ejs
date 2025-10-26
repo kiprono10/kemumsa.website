@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="icon" href="/images/outsourced/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .form-container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <section class="section">
+        <div class="container">
+            <div class="form-container">
+                <h2>Add New Event</h2>
+
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <% errors.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form action="/events/admin" method="POST" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Event Title *</label>
+                            <input type="text" id="title" name="title" class="form-control" placeholder="Enter event title" value="<%= typeof formData !== 'undefined' ? formData.title || '' : '' %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" class="form-control">
+                                <option value="academic" <%= typeof formData !== 'undefined' && formData.category === 'academic' ? 'selected' : '' %>>Academic</option>
+                                <option value="conference" <%= typeof formData !== 'undefined' && formData.category === 'conference' ? 'selected' : '' %>>Conference</option>
+                                <option value="workshop" <%= typeof formData !== 'undefined' && formData.category === 'workshop' ? 'selected' : '' %>>Workshop</option>
+                                <option value="outreach" <%= typeof formData !== 'undefined' && formData.category === 'outreach' ? 'selected' : '' %>>Community Outreach</option>
+                                <option value="social" <%= typeof formData !== 'undefined' && formData.category === 'social' ? 'selected' : '' %>>Social</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Event Date & Time *</label>
+                            <input type="datetime-local" id="date" name="date" class="form-control" value="<%= typeof formData !== 'undefined' ? formData.date || '' : '' %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" name="location" class="form-control" placeholder="Enter event location" value="<%= typeof formData !== 'undefined' ? formData.location || '' : '' %>" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                        <small style="color: var(--text-light);">Upload an image file (max 5MB) or leave empty to use default image</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video">Video</label>
+                        <input type="file" id="video" name="video" class="form-control" accept="video/*">
+                        <small style="color: var(--text-light);">Upload a video file (max 50MB, optional)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacity">Capacity (0 for unlimited)</label>
+                        <input type="number" id="capacity" name="capacity" class="form-control" placeholder="Maximum number of attendees" value="<%= typeof formData !== 'undefined' ? formData.capacity || 0 : 0 %>" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Enter event description" rows="6" required><%= typeof formData !== 'undefined' ? formData.description || '' : '' %></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button type="submit" class="btn btn-accent">Create Event</button>
+                        <a href="/events" class="btn">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
